@@ -42,21 +42,19 @@ public class SellerDaoJDBC implements SellerDao {
 
             int rowsAffected = st.executeUpdate();
 
-            if(rowsAffected > 0){
+            if (rowsAffected > 0) {
                 ResultSet rs = st.getGeneratedKeys();
-                if(rs.next()){
+                if (rs.next()) {
                     int id = rs.getInt(1);
                     obj.setId(id);
                 }
                 DB.closeResultSet(rs);
-            }else {
+            } else {
                 throw new DbException("Unexpected error! No rows affected.");
             }
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             throw new DbException(e.getMessage());
-        }
-        finally {
+        } finally {
             DB.closeStatement(st);
         }
 
@@ -81,11 +79,9 @@ public class SellerDaoJDBC implements SellerDao {
 
             st.executeUpdate();
 
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             throw new DbException(e.getMessage());
-        }
-        finally {
+        } finally {
             DB.closeStatement(st);
         }
 
@@ -95,6 +91,23 @@ public class SellerDaoJDBC implements SellerDao {
     @Override
     public void deleteById(Integer id) {
 
+        PreparedStatement st = null;
+        try {
+            st = conn.prepareStatement(
+                    "DELETE FROM seller\n" +
+                            "WHERE Id = ?"
+            );
+
+            st.setInt(1, id);
+
+            st.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        }
+        finally {
+            DB.closeStatement(st);
+        }
     }
 
     @Override
@@ -111,18 +124,17 @@ public class SellerDaoJDBC implements SellerDao {
             st.setInt(1, id);
 
             rs = st.executeQuery();
-            if(rs.next()){
+            if (rs.next()) {
                 Department dep = instantiateDepartment(rs);
 
                 Seller seller = instantiateSeller(rs, dep);
                 return seller;
-            }else {
-            return null;
-        }
-        }catch (SQLException e){
+            } else {
+                return null;
+            }
+        } catch (SQLException e) {
             throw new DbException(e.getMessage());
-        }
-        finally {
+        } finally {
             DB.closeStatement(st);
             DB.closeResultSet(rs);
         }
@@ -163,11 +175,11 @@ public class SellerDaoJDBC implements SellerDao {
             List<Seller> list = new ArrayList<>();
             Map<Integer, Department> map = new HashMap<>();
 
-            while (rs.next()){
+            while (rs.next()) {
 
                 Department dep = map.get(rs.getInt("DepartmentId"));
 
-                if(dep == null){
+                if (dep == null) {
                     dep = instantiateDepartment(rs);
                     map.put(rs.getInt("DepartmentId"), dep);
                 }
@@ -176,10 +188,9 @@ public class SellerDaoJDBC implements SellerDao {
                 list.add(seller);
             }
             return list;
-        }catch (SQLException e){
+        } catch (SQLException e) {
             throw new DbException(e.getMessage());
-        }
-        finally {
+        } finally {
             DB.closeStatement(st);
             DB.closeResultSet(rs);
         }
@@ -204,11 +215,11 @@ public class SellerDaoJDBC implements SellerDao {
             List<Seller> list = new ArrayList<>();
             Map<Integer, Department> map = new HashMap<>();
 
-            while (rs.next()){
+            while (rs.next()) {
 
                 Department dep = map.get(rs.getInt("DepartmentId"));
 
-                if(dep == null){
+                if (dep == null) {
                     dep = instantiateDepartment(rs);
                     map.put(rs.getInt("DepartmentId"), dep);
                 }
@@ -217,10 +228,9 @@ public class SellerDaoJDBC implements SellerDao {
                 list.add(seller);
             }
             return list;
-        }catch (SQLException e){
+        } catch (SQLException e) {
             throw new DbException(e.getMessage());
-        }
-        finally {
+        } finally {
             DB.closeStatement(st);
             DB.closeResultSet(rs);
         }

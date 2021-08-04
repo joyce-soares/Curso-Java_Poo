@@ -46,6 +46,11 @@ public class Program {
         sellerDao.update(seller);
         System.out.println("Update Completed!!");
 
+        //fazendo delete no banco
+        System.out.println("\n=== TEST 6 seller delete ===");
+        sellerDao.deleteById(8);
+        System.out.println("Delete Completed!!");
+
 
     }
 }
