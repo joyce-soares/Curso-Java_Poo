@@ -5,3 +5,4 @@ de projeto DAO(Data Access Object).
 Para cada entidade, haverá um objeto responsável por fazer acesso a dados relacionado a esta
 entidade.
 Cada DAO será definido por uma interface.</p>
+<p>O projeto faz operações de inserir, deletar, atualizar e devolver dados dado um determinado id.</p>
